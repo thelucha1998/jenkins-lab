@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t eden266/jenkins-docker .'
+        sh 'docker build -t eden266/jenkins-nodejs .'
       }
     }
     stage('Login') {
@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'docker push eden266/jenkins-docker'
+        sh 'docker push eden266/jenkins-nodejs'
       }
     }
   }
