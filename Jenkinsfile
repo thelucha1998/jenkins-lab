@@ -30,7 +30,7 @@ pipeline {
     stage('Push') {
       steps {
         // sh 'docker push eden266/jenkins-nodejs'
-        sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:devops-test'
+        sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-test'
       }
     }
   }
