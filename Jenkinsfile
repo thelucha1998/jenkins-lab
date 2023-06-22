@@ -24,7 +24,7 @@ pipeline {
     stage('Login') {
       steps {
         // sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        sh '''echo $HARBOR_CREDENTIAL_PSW | sudo docker login $REGISTRY -u 'admin' --password-stdin'''
+        sh '''echo $HARBOR_CREDENTIAL_PSW | docker login $REGISTRY -u 'admin' --password-stdin'''
       }
     }
     stage('Push') {
