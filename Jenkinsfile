@@ -13,12 +13,6 @@ pipeline {
     APP_NAME = 'docker-example'
     // ‘robot-test’ is the credential ID you created on the KubeSphere console
     HARBOR_CREDENTIAL = credentials('harbor')
-
-    helmRepo = 'https://artifactory-webinar.jfrogdev.co/artifactory/helm'
-    helmRelease = 'webinar-example'
-
-    dockerTag = '0.0'
-    helmChartVersion = '0.0.1'
   }
   stages {
     stage('Build') {
@@ -39,17 +33,7 @@ pipeline {
         sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-test'
       }
     }
-    stage('Helm package') {
-        steps {
-            script {
-                echo "========== Helm package =========="
-                sh "helm package demo"
-
-                echo "========== Publish helm chart =========="
-                sh "curl -u${HARBOR_CREDENTIAL} -T ./demo-${helmChartVersion}.tgz '${helmRepo}/demo-${helmChartVersion}.tgz'"
-            }
-        }
-    }
+    
   }
   post {
     always {
