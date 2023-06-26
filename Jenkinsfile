@@ -33,7 +33,7 @@ pipeline {
       }
       steps {
         // sh 'docker push eden266/jenkins-nodejs'
-        // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-test'
+        // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
         script {
           commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
           def appimage = docker.build imageName + ":" + commitId.trim()
