@@ -42,7 +42,7 @@ pipeline {
         }
       }
     }
-    /*
+    
     stage('Deploy Dev') {
       when {
         branch 'main'
@@ -56,15 +56,14 @@ pipeline {
           commitId = commitId.trim()
           withKubeConfig(credentialsId: 'kubeconfig') {
             withCredentials(bindings: [usernamePassword(credentialsId: registryCredential, usernameVariable: 'HARBOR_CREDENTIAL_USER', passwordVariable: 'HARBOR_CREDENTIAL_PSW')]) {
-              sh 'kubectl delete secret regcred --namespace=example-dev --ignore-not-found'
-              sh 'kubectl create secret docker-registry regcred --namespace=example-dev --docker-server=https://gitlab-jenkins.opes.com.vn --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_PASSWORD --docker-email=email@example.com'
+              sh 'kubectl delete secret regcred --namespace=jenkins-nodejs --ignore-not-found'
+              sh 'kubectl create secret docker-registry regcred --namespace=jenkins-nodejs --docker-server=https://gitlab-jenkins.opes.com.vn --docker-username=$HARBOR_CREDENTIAL_USER --docker-password=$HARBOR_CREDENTIAL_PSW --docker-email=email@example.com'
             }
             sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
           }
         }
       }
     }
-    */
     
   }
   post {
