@@ -9,6 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
+        sh 'git checkout -b jenkins'
         sh 'docker build -t eden266/jenkins-nodejs .'
       }
     }
