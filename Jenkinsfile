@@ -35,16 +35,9 @@ pipeline {
         // sh 'docker push eden266/jenkins-nodejs'
         // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
         script {
-          commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
-          def appimage = docker.build imageName + ":" + commitId.trim()
+          
           docker.withRegistry( 'https://gitlab-jenkins.opes.com.vn', registryCredential ) {
-            appimage.push()
-            if (env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'release') {
-              appimage.push('latest')
-              if (env.BRANCH_NAME == 'release') {
-                appimage.push("release-" + "${COMMIT_SHA}")
-              }
-            }
+            sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
           }
         }
       }
