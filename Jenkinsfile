@@ -22,6 +22,11 @@ pipeline {
         sh 'docker push eden266/jenkins-nodejs'
       }
     }
+    stage('Deploying into k8s'){
+      steps{
+        sh 'kubectl apply -f deployment.yml'
+      }
+    }
   }
   post {
     always {
