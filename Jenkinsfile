@@ -33,6 +33,28 @@ pipeline {
         sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-test'
       }
     }
+    stage('Deploy Dev') {
+      when {
+        branch 'main'
+      }
+      environment {
+        registryCredential = 'harbor'
+      }
+      steps {
+        script{
+          commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
+          commitId = commitId.trim()
+          withKubeConfig(credentialsId: 'kubeconfig') {
+            withCredentials(bindings: [usernamePassword(credentialsId: registryCredential, usernameVariable: 'HARBOR_CREDENTIAL_USER', passwordVariable: 'HARBOR_CREDENTIAL_PSW')]) {
+              sh 'kubectl delete secret regcred --namespace=example-dev --ignore-not-found'
+              sh 'kubectl create secret docker-registry regcred --namespace=example-dev --docker-server=https://gitlab-jenkins.opes.com.vn --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_PASSWORD --docker-email=email@example.com'
+            }
+            sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
+          }
+        }
+      }
+    }
+
     
   }
   post {
