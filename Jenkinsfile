@@ -28,11 +28,27 @@ pipeline {
       }
     }
     stage('Push') {
+      environment {
+        registryCredential = 'harbor'
+      }
       steps {
         // sh 'docker push eden266/jenkins-nodejs'
-        sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-test'
+        // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-test'
+        script {
+          commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
+          def appimage = docker.build imageName + ":" + commitId.trim()
+          docker.withRegistry( 'https://gitlab-jenkins.opes.com.vn', registryCredential ) {
+            appimage.push()
+            if (env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'release') {
+              appimage.push('latest')
+              if (env.BRANCH_NAME == 'release') {
+                appimage.push("release-" + "${COMMIT_SHA}")
+              }
+            }
+          }
       }
     }
+    /*
     stage('Deploy Dev') {
       when {
         branch 'main'
@@ -54,7 +70,7 @@ pipeline {
         }
       }
     }
-
+    */
     
   }
   post {
