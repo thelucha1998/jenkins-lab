@@ -42,7 +42,7 @@ pipeline {
         }
       }
     }
-    
+    /*
     stage('Deploy Dev') {
       when {
         branch 'main'
@@ -64,6 +64,7 @@ pipeline {
         }
       }
     }
+    */
     
   }
   post {
