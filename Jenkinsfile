@@ -18,7 +18,7 @@ pipeline {
     stage('Build') {
       steps {
         // sh 'docker build -t eden266/jenkins-nodejs .'
-        sh 'docker build -t $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-test .'
+        sh 'docker build -t $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs .'
       }
     }
     stage('Login') {
